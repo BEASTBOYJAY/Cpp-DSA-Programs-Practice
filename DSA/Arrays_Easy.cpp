@@ -650,3 +650,406 @@ using namespace std;
 //         cout << val << " ";
 //     return 0;
 // }
+
+// ##################################################################################
+// ################ PROBLEM: Find the missing number in an array ####################
+// ##################################################################################
+
+// ############################ BRUTE FORCE ###################################
+
+// #include <vector>
+
+// int missingNumber(vector<int> &a, int N)
+// {
+//     for (int i = 1; i <= N; i++)
+//     {
+//         int flag = 0;
+
+//         for (int j = 0; j < N - 1; j++)
+//         {
+//             if (a[j] == i)
+//             {
+//                 flag = 1;
+//                 break;
+//             }
+//         }
+
+//         if (flag == 0)
+//             return i;
+//     }
+
+//     return -1;
+// }
+
+// Time Complexity: O(N*N)
+
+// ############################ 1st OPTIMAL APPROACH ###################################
+
+// int missingNumber(vector<int> &a, int N)
+// {
+//     int sum = (N * (N + 1)) / 2;
+
+//     int s2 = 0;
+//     for (int i = 0; i < N - 1; i++)
+//     {
+//         s2 += a[i];
+//     }
+
+//     return sum - s2;
+// }
+// Time Complexity: O(N)
+
+// ############################ 2nd OPTIMAL APPROACH ###################################
+
+// int missingNumber(vector<int> &a, int N)
+// {
+//     int xor1 = 0, xor2 = 0;
+
+//     // XOR all the array elements and numbers from 1 to N-1
+//     for (int i = 0; i < N - 1; i++)
+//     {
+//         xor2 = xor2 ^ a[i];    // XOR of array elements
+//         xor1 = xor1 ^ (i + 1); // XOR of numbers from 1 to N-1
+//     }
+
+//     xor1 = xor1 ^ N; // Include N in the XOR
+
+//     // XOR of xor1 and xor2 gives the missing number
+//     return xor1 ^ xor2;
+// }
+// Time Complexity: O(N)
+
+// #######################################################################################
+// ################ PROBLEM: Count Maximum Consecutive One's in the array ################
+// #######################################################################################
+
+// int findMaxConsecutiveOnes(vector<int> &nums)
+// {
+//     int cnt = 0;
+//     int maxi = 0;
+//     for (int i = 0; i < nums.size(); i++)
+//     {
+//         if (nums[i] == 1)
+//         {
+//             cnt++;
+//         }
+//         else
+//         {
+//             cnt = 0;
+//         }
+
+//         maxi = max(maxi, cnt);
+//     }
+//     return maxi;
+// }
+
+// #########################################################################################################
+// ################ PROBLEM: Find the number that appears once, and the other numbers twice ################
+// #########################################################################################################
+
+// ############################ BRUTE FORCE ###################################
+
+#include <vector>
+
+// int getSingleElement(vector<int> &arr)
+// {
+//     int n = arr.size();
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         int num = arr[i];
+//         int cnt = 0;
+
+//         for (int j = 0; j < n; j++)
+//         {
+//             if (arr[j] == num)
+//                 cnt++;
+//         }
+
+//         if (cnt == 1)
+//             return num;
+//     }
+
+//     return -1;
+// }
+// Time Complexity: O(N*N)
+
+// ############################ BETTER APPROACH ###################################
+
+// int getSingleElement(vector<int> &arr)
+// {
+//     int n = arr.size();
+
+//     int maxi = arr[0];
+//     for (int i = 0; i < n; i++)
+//     {
+//         maxi = max(maxi, arr[i]);
+//     }
+
+//     vector<int> hash(maxi + 1, 0);
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         hash[arr[i]]++;
+//     }
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         if (hash[arr[i]] == 1)
+//             return arr[i];
+//     }
+
+//     return -1;
+// }
+// Time Complexity: O(N)+O(N)+O(N)
+
+// ############################ OPTIMAL APPROACH ###################################
+
+// int getSingleElement(vector<int> &arr)
+// {
+//     int n = arr.size();
+//     int xorr = 0;
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         xorr = xorr ^ arr[i];
+//     }
+
+//     return xorr;
+// }
+// Time Complexity: O(N)
+
+// #######################################################################################
+// ################ PROBLEM: Longest Subarray with given Sum K(Positives) ################
+// #######################################################################################
+
+// ############################ 1st APPROACH ###################################
+
+// int getLongestSubarray(vector<int> &a, long long k)
+// {
+//     int n = a.size(); // size of the array.
+
+//     int len = 0;
+//     for (int i = 0; i < n; i++)
+//     { // starting index
+//         for (int j = i; j < n; j++)
+//         { // ending index
+//             // add all the elements of
+//             // subarray = a[i...j]:
+//             long long s = 0;
+//             for (int K = i; K <= j; K++)
+//             {
+//                 s += a[K];
+//             }
+
+//             if (s == k)
+//                 len = max(len, j - i + 1);
+//         }
+//     }
+//     return len;
+// }
+// Time Complexity: O(N^3)
+
+// ############################ 2nd APPROACH ###################################
+
+// int getLongestSubarray(vector<int> &a, long long k)
+// {
+//     int n = a.size(); // size of the array.
+
+//     int len = 0;
+//     for (int i = 0; i < n; i++)
+//     {                    // starting index
+//         long long s = 0; // Sum variable
+//         for (int j = i; j < n; j++)
+//         { // ending index
+//             // add the current element to
+//             // the subarray a[i...j-1]:
+//             s += a[j];
+
+//             if (s == k)
+//                 len = max(len, j - i + 1);
+//         }
+//     }
+//     return len;
+// }
+// Time Complexity: O(N2)
+
+// ############################ 3rd APPROACH ###################################
+
+// #include <map>
+// int getLongestSubarray(vector<int> &a, long long k)
+// {
+//     int n = a.size(); // size of the array.
+
+//     map<long long, int> preSumMap;
+//     long long sum = 0;
+//     int maxLen = 0;
+//     for (int i = 0; i < n; i++)
+//     {
+//         // calculate the prefix sum till index i:
+//         sum += a[i];
+
+//         // if the sum = k, update the maxLen:
+//         if (sum == k)
+//         {
+//             maxLen = max(maxLen, i + 1);
+//         }
+
+//         // calculate the sum of remaining part i.e. x-k:
+//         long long rem = sum - k;
+
+//         // Calculate the length and update maxLen:
+//         if (preSumMap.find(rem) != preSumMap.end())
+//         {
+//             int len = i - preSumMap[rem];
+//             maxLen = max(maxLen, len);
+//         }
+
+//         // Finally, update the map checking the conditions:
+//         if (preSumMap.find(sum) == preSumMap.end())
+//         {
+//             preSumMap[sum] = i;
+//         }
+//     }
+
+//     return maxLen;
+// }
+// Time Complexity: O(N) or O(N*logN)
+
+// ############################ 4th APPROACH ###################################
+
+// int getLongestSubarray(vector<int> &a, long long k)
+// {
+//     int n = a.size(); // size of the array.
+
+//     int left = 0, right = 0; // 2 pointers
+//     long long sum = a[0];
+//     int maxLen = 0;
+//     while (right < n)
+//     {
+//         // if sum > k, reduce the subarray from left
+//         // until sum becomes less or equal to k:
+//         while (left <= right && sum > k)
+//         {
+//             sum -= a[left];
+//             left++;
+//         }
+
+//         // if sum = k, update the maxLen i.e. answer:
+//         if (sum == k)
+//         {
+//             maxLen = max(maxLen, right - left + 1);
+//         }
+
+//         // Move forward thw right pointer:
+//         right++;
+//         if (right < n)
+//             sum += a[right];
+//     }
+
+//     return maxLen;
+// }
+// Time Complexity: O(2*N)
+
+// #################################################################################################
+// ################ PROBLEM: Longest Subarray with sum K | [Postives and Negatives] ################
+// #################################################################################################
+
+// ############################ BRUTE FORCE ###################################
+
+// int getLongestSubarray(vector<int> &a, int k)
+// {
+//     int n = a.size(); // Get the size of the input array
+//     int len = 0;      // Variable to store the maximum length found
+
+//     // Loop to choose the starting index of the subarray
+//     for (int i = 0; i < n; i++)
+//     {
+//         // Loop to choose the ending index of the subarray
+//         for (int j = i; j < n; j++)
+//         {
+//             int sum = 0; // Store sum of current subarray
+
+//             // Loop to calculate the sum of the subarray from i to j
+//             for (int idx = i; idx <= j; idx++)
+//             {
+//                 sum += a[idx];
+//             }
+
+//             // If subarray sum matches target, update maximum length
+//             if (sum == k)
+//             {
+//                 len = max(len, j - i + 1);
+//             }
+//         }
+//     }
+//     return len; // Return the longest length found
+// }
+
+// Time Complexity: O(N^3)
+
+// ############################ BETTER APPROACH ###################################
+
+// int getLongestSubarray(vector<int> &a, int k)
+// {
+//     int n = a.size(); // Total number of elements
+//     int len = 0;      // Variable to store the max length found
+
+//     // Outer loop: pick every possible starting index
+//     for (int i = 0; i < n; i++)
+//     {
+//         int s = 0; // Reset sum for each new starting index
+
+//         // Inner loop: extend the subarray from the current start
+//         for (int j = i; j < n; j++)
+//         {
+//             s += a[j]; // Add current element to the ongoing sum
+
+//             // If current sum equals target, update the max length
+//             if (s == k)
+//             {
+//                 len = max(len, j - i + 1);
+//             }
+//         }
+//     }
+//     return len; // Return the maximum length found
+// }
+// Time Complexity: O(N2)
+
+// ############################ OPTIMAL APPROACH ###################################
+// #include <map>
+// int getLongestSubarray(vector<int> &a, int k)
+// {
+//     int n = a.size();
+//     map<int, int> preSumMap; // prefixSum -> earliest index
+//     int sum = 0;
+//     int maxLen = 0;
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         sum += a[i]; // compute running prefix sum
+
+//         // Case 1: If the entire sum from 0 to i is equal to k
+//         if (sum == k)
+//         {
+//             maxLen = max(maxLen, i + 1);
+//         }
+
+//         // Case 2: If (sum - k) is seen before, a valid subarray exists
+//         int rem = sum - k;
+//         if (preSumMap.find(rem) != preSumMap.end())
+//         {
+//             int len = i - preSumMap[rem];
+//             maxLen = max(maxLen, len);
+//         }
+
+//         // Only store the first occurrence of each prefix sum
+//         if (preSumMap.find(sum) == preSumMap.end())
+//         {
+//             preSumMap[sum] = i;
+//         }
+//     }
+
+//     return maxLen;
+// }
+// Time Complexity: O(N) or O(N*logN)
