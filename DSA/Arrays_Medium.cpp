@@ -464,6 +464,7 @@ using namespace std;
 // #################################################################################################################
 
 // ############################ BRUTE FORCE ###################################
+
 // #include <algorithm>
 // vector<int> nextPermutation(vector<int> &nums)
 // {
@@ -490,6 +491,7 @@ using namespace std;
 // Time Complexity: O(N!*N)
 
 // ############################ OPTIMAL APPROACH ###################################
+
 // void nextPermutation(vector<int> &nums)
 // {
 //     int index = -1;
@@ -521,3 +523,383 @@ using namespace std;
 //     reverse(nums.begin() + index + 1, nums.end());
 // }
 // Time Complexity: O(N)
+
+// ##################################################################
+// ################ PROBLEM: Leaders in an Array ####################
+// ##################################################################
+
+// ############################ BRUTE FORCE ###################################
+
+// vector<int> leaders(vector<int> &nums)
+// {
+//     vector<int> ans;
+
+//     // Iterate through each element in nums
+//     for (int i = 0; i < nums.size(); i++)
+//     {
+//         bool leader = true;
+
+//         for (int j = i + 1; j < nums.size(); j++)
+//         {
+//             if (nums[j] >= nums[i])
+//             {
+//                 leader = false;
+//                 break;
+//             }
+//         }
+
+//         if (leader)
+//         {
+//             ans.push_back(nums[i]);
+//         }
+//     }
+
+//     return ans;
+// }
+
+// Time Complexity: O(N2)
+
+// ############################ OPTIMAL APPROACH ###################################
+
+// #include <algorithm>
+// vector<int> leaders(vector<int> &nums)
+// {
+//     vector<int> ans;
+
+//     if (nums.empty())
+//     {
+//         return ans;
+//     }
+
+//     int max = nums[nums.size() - 1];
+//     ans.push_back(nums[nums.size() - 1]);
+
+//     for (int i = nums.size() - 2; i >= 0; i--)
+//     {
+//         if (nums[i] > max)
+//         {
+//             ans.push_back(nums[i]);
+//             max = nums[i];
+//         }
+//     }
+
+//     reverse(ans.begin(), ans.end());
+
+//     return ans;
+// }
+// Time Complexity: O(N)
+
+// #######################################################################################
+// ################ PROBLEM: Longest Consecutive Sequence in an Array ####################
+// #######################################################################################
+
+// ############################ BRUTE FORCE ###################################
+
+// class Solution
+// {
+// private:
+//     // Helper function to perform linear search
+//     bool linearSearch(vector<int> &a, int num)
+//     {
+//         int n = a.size();
+//         // Traverse through the array
+//         for (int i = 0; i < n; i++)
+//         {
+//             if (a[i] == num)
+//                 return true;
+//         }
+//         return false;
+//     }
+
+// public:
+//     int longestConsecutive(vector<int> &nums)
+//     {
+//         if (nums.size() == 0)
+//         {
+//             return 0;
+//         }
+//         int n = nums.size();
+//         int longest = 1;
+
+//         for (int i = 0; i < n; i++)
+//         {
+//             int x = nums[i];
+//             int cnt = 1;
+
+//             while (linearSearch(nums, x + 1) == true)
+//             {
+//                 x += 1;
+//                 cnt += 1;
+//             }
+
+//             longest = max(longest, cnt);
+//         }
+//         return longest;
+//     }
+// };
+// Time Complexity: O(n2),
+
+// ############################ BETTER APPROACH ###################################
+
+// #include <algorithm>
+
+// int longestConsecutive(vector<int> &nums)
+// {
+//     int n = nums.size();
+
+//     if (n == 0)
+//         return 0;
+
+//     sort(nums.begin(), nums.end());
+
+//     int lastSmaller = INT_MIN;
+//     int cnt = 0;
+//     int longest = 1;
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         if (nums[i] - 1 == lastSmaller)
+//         {
+//             cnt += 1;
+//             lastSmaller = nums[i];
+//         }
+//         else if (nums[i] != lastSmaller)
+//         {
+//             cnt = 1;
+//             lastSmaller = nums[i];
+//         }
+//         longest = max(longest, cnt);
+//     }
+//     return longest;
+// }
+// Time Complexity: O(n log n)
+
+// ############################ OPTIMAL APPROACH ###################################
+
+// #include <unordered_set>
+// int longestConsecutive(vector<int> &a)
+// {
+//     int n = a.size();
+//     if (n == 0)
+//         return 0;
+
+//     int longest = 1;
+//     unordered_set<int> st;
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         st.insert(a[i]);
+//     }
+
+//     for (auto it : st)
+//     {
+//         if (st.find(it - 1) == st.end())
+//         {
+//             int cnt = 1;
+//             int x = it;
+
+//             while (st.find(x + 1) != st.end())
+//             {
+//                 x = x + 1;
+//                 cnt = cnt + 1;
+//             }
+//             longest = max(longest, cnt);
+//         }
+//     }
+//     return longest;
+// }
+
+// Time Complexity: O(n)
+
+// #######################################################################################
+// ################ PROBLEM: Longest Consecutive Sequence in an Array ####################
+// #######################################################################################
+
+// ############################ BRUTE FORCE ###################################
+
+// void setZeroes(vector<vector<int>> &matrix)
+// {
+//     int m = matrix.size();
+//     int n = matrix[0].size();
+
+//     for (int i = 0; i < m; i++)
+//     {
+//         for (int j = 0; j < n; j++)
+//         {
+//             if (matrix[i][j] == 0)
+//             {
+
+//                 for (int col = 0; col < n; col++)
+//                 {
+//                     if (matrix[i][col] != 0)
+//                         matrix[i][col] = -1;
+//                 }
+//                 for (int row = 0; row < m; row++)
+//                 {
+//                     if (matrix[row][j] != 0)
+//                         matrix[row][j] = -1;
+//                 }
+//             }
+//         }
+//     }
+
+//     for (int i = 0; i < m; i++)
+//     {
+//         for (int j = 0; j < n; j++)
+//         {
+//             if (matrix[i][j] == -1)
+//                 matrix[i][j] = 0;
+//         }
+//     }
+// }
+// Time Complexity: O(m * n * (m + n))
+
+// ############################ BETTER APPROACH ###################################
+
+// void setZeroes(vector<vector<int>> &matrix)
+// {
+//     int m = matrix.size();
+//     int n = matrix[0].size();
+
+//     vector<int> row(m, 0);
+//     vector<int> col(n, 0);
+
+//     for (int i = 0; i < m; i++)
+//     {
+//         for (int j = 0; j < n; j++)
+//         {
+//             if (matrix[i][j] == 0)
+//             {
+//                 row[i] = 1;
+//                 col[j] = 1;
+//             }
+//         }
+//     }
+
+//     for (int i = 0; i < m; i++)
+//     {
+//         for (int j = 0; j < n; j++)
+//         {
+//             if (row[i] == 1 || col[j] == 1)
+//             {
+//                 matrix[i][j] = 0;
+//             }
+//         }
+//     }
+// }
+// Time Complexity: O(m × n)
+
+//  ############################ OPTIMAL APPROACH ###################################
+
+// void setZeroes(vector<vector<int>> &matrix)
+// {
+//     int m = matrix.size();
+//     int n = matrix[0].size();
+
+//     bool firstRowZero = false;
+//     bool firstColZero = false;
+
+//     for (int j = 0; j < n; j++)
+//     {
+//         if (matrix[0][j] == 0)
+//         {
+//             firstRowZero = true;
+//             break;
+//         }
+//     }
+
+//     for (int i = 0; i < m; i++)
+//     {
+//         if (matrix[i][0] == 0)
+//         {
+//             firstColZero = true;
+//             break;
+//         }
+//     }
+
+//     for (int i = 1; i < m; i++)
+//     {
+//         for (int j = 1; j < n; j++)
+//         {
+//             if (matrix[i][j] == 0)
+//             {
+//                 matrix[i][0] = 0;
+//                 matrix[0][j] = 0;
+//             }
+//         }
+//     }
+
+//     for (int i = 1; i < m; i++)
+//     {
+//         for (int j = 1; j < n; j++)
+//         {
+//             if (matrix[i][0] == 0 || matrix[0][j] == 0)
+//             {
+//                 matrix[i][j] = 0;
+//             }
+//         }
+//     }
+
+//     if (firstRowZero)
+//     {
+//         for (int j = 0; j < n; j++)
+//         {
+//             matrix[0][j] = 0;
+//         }
+//     }
+
+//     if (firstColZero)
+//     {
+//         for (int i = 0; i < m; i++)
+//         {
+//             matrix[i][0] = 0;
+//         }
+//     }
+// }
+// Time Complexity: O(m × n)
+
+// ########################################################################
+// ################ PROBLEM: Rotate Image by 90 degree ####################
+// ########################################################################
+
+// ############################ BRUTE FORCE ###################################
+
+// vector<vector<int>> rotateClockwise(vector<vector<int>> &matrix)
+// {
+//     int n = matrix.size();
+
+//     vector<vector<int>> rotated(n, vector<int>(n));
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         for (int j = 0; j < n; j++)
+//         {
+//             rotated[j][n - i - 1] = matrix[i][j];
+//         }
+//     }
+
+//     return rotated;
+// }
+
+// Time Complexity: O(N²)
+
+//  ############################ OPTIMAL APPROACH ###################################
+
+// void rotateClockwise(vector<vector<int>> &matrix)
+// {
+//     int n = matrix.size();
+
+//     for (int i = 0; i < n; ++i)
+//     {
+//         for (int j = i + 1; j < n; ++j)
+//         {
+//             swap(matrix[i][j], matrix[j][i]);
+//         }
+//     }
+
+//     for (int i = 0; i < n; ++i)
+//     {
+//         reverse(matrix[i].begin(), matrix[i].end());
+//     }
+// }
+// Time Complexity: O(N²)
