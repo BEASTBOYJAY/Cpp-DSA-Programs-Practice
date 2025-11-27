@@ -357,3 +357,167 @@ using namespace std;
 //     return maxi;
 // }
 // Time Complexity: O(N)
+
+// #################################################################
+// ################ PROBLEM: Stock Buy And Sell ####################
+// #################################################################
+
+// ############################ BRUTE FORCE ###################################
+
+// int maxProfit(vector<int> &arr)
+// {
+//     int maxPro = 0;
+//     int n = arr.size();
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         for (int j = i + 1; j < n; j++)
+//         {
+//             if (arr[j] > arr[i])
+//             {
+//                 maxPro = max(arr[j] - arr[i], maxPro);
+//             }
+//         }
+//     }
+
+//     return maxPro;
+// }
+// Time complexity: O(n^2)
+
+// ############################ OPTIMAL APPROACH ###################################
+
+// int maxProfit(vector<int> &arr)
+// {
+//     int maxPro = 0;
+//     int n = arr.size();
+//     int minPrice = INT_MAX;
+
+//     for (int i = 0; i < arr.size(); i++)
+//     {
+//         minPrice = min(minPrice, arr[i]);
+//         maxPro = max(maxPro, arr[i] - minPrice);
+//     }
+
+//     return maxPro;
+// }
+
+// ###############################################################################
+// ################ PROBLEM: Rearrange Array Elements by Sign ####################
+// ###############################################################################
+
+// ############################ BRUTE FORCE ###################################
+
+// vector<int> RearrangeBySign(vector<int> &A, int n)
+// {
+//     vector<int> pos;
+//     vector<int> neg;
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         if (A[i] > 0)
+//             pos.push_back(A[i]);
+//         else
+//             neg.push_back(A[i]);
+//     }
+
+//     for (int i = 0; i < n / 2; i++)
+//     {
+//         A[2 * i] = pos[i];
+//         A[2 * i + 1] = neg[i];
+//     }
+
+//     return A;
+// }
+// Time Complexity: O(N+N/2)
+
+// ############################ OPTIMAL APPROACH ###################################
+
+// vector<int> rearrangeBySign(vector<int> &A)
+// {
+//     int n = A.size();
+
+//     vector<int> ans(n, 0);
+
+//     int posIndex = 0, negIndex = 1;
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         if (A[i] < 0)
+//         {
+//             ans[negIndex] = A[i];
+//             negIndex += 2;
+//         }
+//         else
+//         {
+
+//             ans[posIndex] = A[i];
+//             posIndex += 2;
+//         }
+//     }
+
+//     return ans;
+// }
+// Time Complexity: O(N)
+
+// #################################################################################################################
+// ################ PROBLEM: next_permutation : find next lexicographically greater permutation ####################
+// #################################################################################################################
+
+// ############################ BRUTE FORCE ###################################
+// #include <algorithm>
+// vector<int> nextPermutation(vector<int> &nums)
+// {
+//     vector<vector<int>> all;
+
+//     sort(nums.begin(), nums.end());
+//     do
+//     {
+//         all.push_back(nums);
+//     } while (next_permutation(nums.begin(), nums.end()));
+
+//     for (int i = 0; i < all.size(); i++)
+//     {
+//         if (all[i] == nums)
+//         {
+//             if (i == all.size() - 1)
+//                 return all[0];
+//             return all[i + 1];
+//         }
+//     }
+
+//     return nums;
+// }
+// Time Complexity: O(N!*N)
+
+// ############################ OPTIMAL APPROACH ###################################
+// void nextPermutation(vector<int> &nums)
+// {
+//     int index = -1;
+
+//     for (int i = nums.size() - 2; i >= 0; i--)
+//     {
+//         if (nums[i] < nums[i + 1])
+//         {
+//             index = i;
+//             break;
+//         }
+//     }
+
+//     if (index == -1)
+//     {
+//         reverse(nums.begin(), nums.end());
+//         return;
+//     }
+
+//     for (int i = nums.size() - 1; i > index; i--)
+//     {
+//         if (nums[i] > nums[index])
+//         {
+//             swap(nums[i], nums[index]);
+//             break;
+//         }
+//     }
+
+//     reverse(nums.begin() + index + 1, nums.end());
+// }
+// Time Complexity: O(N)
