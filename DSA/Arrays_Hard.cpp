@@ -285,7 +285,7 @@ using namespace std;
 
 //  ############################ OPTIMAL APPROACH ###################################
 
-#include <algorithm>
+// #include <algorithm>
 
 // vector<vector<int>> threeSum(vector<int> &arr, int n)
 // {
@@ -323,3 +323,253 @@ using namespace std;
 // }
 
 // Time Complexity: O(NlogN)+O(N2)
+
+// ###############################################################################################
+// ################ PROBLEM: 3 Sum : Find Quads that add up to a target value ####################
+// ###############################################################################################
+
+// ############################ BRUTE FORCE ###################################
+
+// #include <set>
+// #include <algorithm>
+
+// vector<vector<int>> fourSum(vector<int> &arr, int target)
+// {
+//     int n = arr.size();
+//     set<vector<int>> st;
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         for (int j = i + 1; j < n; j++)
+//         {
+//             for (int k = j + 1; k < n; k++)
+//             {
+//                 for (int l = k + 1; l < n; l++)
+//                 {
+//                     long long sum = (long long)arr[i] + arr[j] + arr[k] + arr[l];
+//                     if (sum == target)
+//                     {
+//                         vector<int> temp = {arr[i], arr[j], arr[k], arr[l]};
+//                         sort(temp.begin(), temp.end());
+//                         st.insert(temp);
+//                     }
+//                 }
+//             }
+//         }
+//     }
+//     return vector<vector<int>>(st.begin(), st.end());
+// }
+
+// Time Complexity: O(N4 * log(no. of unique triplets))
+
+//  ############################ BETTER APPROACH ###################################
+
+// #include <set>
+// #include <unordered_set>
+// #include <algorithm>
+
+// vector<vector<int>> fourSum(vector<int> &arr, int target)
+// {
+//     int n = arr.size();
+//     set<vector<int>> st;
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         for (int j = i + 1; j < n; j++)
+//         {
+//             unordered_set<int> seen;
+
+//             for (int k = j + 1; k < n; k++)
+//             {
+//                 long long required = (long long)target - arr[i] - arr[j] - arr[k];
+
+//                 if (seen.count(required))
+//                 {
+//                     vector<int> temp = {arr[i], arr[j], arr[k], (int)required};
+//                     sort(temp.begin(), temp.end());
+//                     st.insert(temp);
+//                 }
+
+//                 seen.insert(arr[k]);
+//             }
+//         }
+//     }
+
+//     return vector<vector<int>>(st.begin(), st.end());
+// }
+
+// Time Complexity: O(N3*log(M))
+
+//  ############################ OPTIMAL APPROACH ###################################
+
+// #include <algorithm>
+
+// vector<vector<int>> fourSum(vector<int> &arr, int target)
+// {
+//     int n = arr.size();
+//     vector<vector<int>> ans;
+
+//     sort(arr.begin(), arr.end());
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         if (i > 0 && arr[i] == arr[i - 1])
+//             continue;
+
+//         for (int j = i + 1; j < n; j++)
+//         {
+//             if (j > i + 1 && arr[j] == arr[j - 1])
+//                 continue;
+
+//             int left = j + 1, right = n - 1;
+//             while (left < right)
+//             {
+//                 long long sum = (long long)arr[i] + arr[j] +
+//                                 arr[left] + arr[right];
+
+//                 if (sum == target)
+//                 {
+//                     ans.push_back({arr[i], arr[j],
+//                                    arr[left], arr[right]});
+
+//                     while (left < right && arr[left] == arr[left + 1])
+//                         left++;
+//                     while (left < right && arr[right] == arr[right - 1])
+//                         right--;
+
+//                     left++;
+//                     right--;
+//                 }
+//                 else if (sum < target)
+//                     left++;
+//                 else
+//                     right--;
+//             }
+//         }
+//     }
+//     return ans;
+// }
+
+// Time Complexity: O(N3)
+
+// ###################################################################################################
+// ################ PROBLEM: 3 Sum : Length of the longest subarray with zero Sum ####################
+// ###################################################################################################
+
+// ############################ BRUTE FORCE ###################################
+
+// int solve(vector<int> &a)
+// {
+//     int maxLen = 0;
+//     unordered_map<int, int> sumIndexMap;
+//     int sum = 0;
+
+//     for (int i = 0; i < (int)a.size(); i++)
+//     {
+//         sum += a[i];
+
+//         if (sum == 0)
+//         {
+//             maxLen = i + 1;
+//         }
+//         else if (sumIndexMap.find(sum) != sumIndexMap.end())
+//         {
+//             maxLen = max(maxLen, i - sumIndexMap[sum]);
+//         }
+//         else
+//         {
+//             sumIndexMap[sum] = i;
+//         }
+//     }
+
+//     return maxLen;
+// }
+
+// Time Complexity: O(N^2)
+
+// ############################ OPTIMAL APPROACH ###################################
+
+// int maxLen(int A[], int n)
+// {
+//     unordered_map<int, int> mpp;
+//     int maxi = 0;
+//     int sum = 0;
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         sum += A[i];
+
+//         if (sum == 0)
+//         {
+//             maxi = i + 1;
+//         }
+//         else
+//         {
+//             if (mpp.find(sum) != mpp.end())
+//             {
+//                 maxi = max(maxi, i - mpp[sum]);
+//             }
+//             else
+//             {
+//                 mpp[sum] = i;
+//             }
+//         }
+//     }
+
+//     return maxi;
+// }
+
+// Time Complexity: O(n)
+
+// #####################################################################################################
+// ################ PROBLEM: 3 Sum : Count the number of subarrays with given xor K ####################
+// #####################################################################################################
+
+// ############################ BRUTE FORCE ###################################
+
+// int countSubarraysXOR(vector<int> &A, int B)
+// {
+//     int count = 0;
+//     for (int i = 0; i < A.size(); i++)
+//     {
+//         int xorVal = 0;
+//         for (int j = i; j < A.size(); j++)
+//         {
+//             xorVal ^= A[j];
+//             if (xorVal == B)
+//             {
+//                 count++;
+//             }
+//         }
+//     }
+//     return count;
+// }
+// Time Complexity: O(N^2)
+
+// ############################ OPTIMAL APPROACH ###################################
+
+// int countSubarrays(vector<int> &A, int k)
+// {
+//     unordered_map<int, int> freq;
+//     freq[0] = 1;
+
+//     int prefixXor = 0;
+//     int count = 0;
+
+//     for (int num : A)
+//     {
+//         prefixXor ^= num;
+
+//         int target = prefixXor ^ k;
+
+//         if (freq.find(target) != freq.end())
+//         {
+//             count += freq[target];
+//         }
+
+//         freq[prefixXor]++;
+//     }
+//     return count;
+// }
+
+// Time Complexity: O(N)
