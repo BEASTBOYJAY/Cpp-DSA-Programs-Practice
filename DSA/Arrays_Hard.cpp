@@ -849,3 +849,272 @@ using namespace std;
 // }
 
 // Time Complexity: O(N)
+
+// ################################################################################
+// ################ PROBLEM: Count inversions in an array #########################
+// ################################################################################
+
+// ############################ BRUTE FORCE ###################################
+
+// int numberOfInversions(vector<int> &a, int n)
+// {
+//     int cnt = 0;
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         for (int j = i + 1; j < n; j++)
+//         {
+//             if (a[i] > a[j])
+//                 cnt++;
+//         }
+//     }
+//     return cnt;
+// }
+
+// Time Complexity: O(N2)
+
+// ############################ OPTIMAL APPROACH ###################################
+
+// int merge(vector<int> &arr, int low, int mid, int high)
+// {
+//     vector<int> temp;
+
+//     int left = low;
+//     int right = mid + 1;
+
+//     int cnt = 0;
+
+//     while (left <= mid && right <= high)
+//     {
+//         if (arr[left] <= arr[right])
+//         {
+//             temp.push_back(arr[left]);
+//             left++;
+//         }
+//         else
+//         {
+//             temp.push_back(arr[right]);
+//             cnt += (mid - left + 1);
+//             right++;
+//         }
+//     }
+
+//     while (left <= mid)
+//     {
+//         temp.push_back(arr[left]);
+//         left++;
+//     }
+
+//     while (right <= high)
+//     {
+//         temp.push_back(arr[right]);
+//         right++;
+//     }
+
+//     for (int i = low; i <= high; i++)
+//     {
+//         arr[i] = temp[i - low];
+//     }
+
+//     return cnt;
+// }
+
+// int mergeSort(vector<int> &arr, int low, int high)
+// {
+//     int cnt = 0;
+
+//     if (low >= high)
+//         return cnt;
+
+//     int mid = (low + high) / 2;
+
+//     cnt += mergeSort(arr, low, mid);
+//     cnt += mergeSort(arr, mid + 1, high);
+//     cnt += merge(arr, low, mid, high);
+
+//     return cnt;
+// }
+
+// int numberOfInversions(vector<int> &a, int n)
+// {
+//     return mergeSort(a, 0, n - 1);
+// }
+
+// Time Complexity: O(N log N)
+
+// #######################################################################
+// ################ PROBLEM: Count Reverse Pairs #########################
+// #######################################################################
+
+// ############################ BRUTE FORCE ###################################
+
+// int countPairs(vector<int> &a, int n)
+// {
+
+//     int cnt = 0;
+//     for (int i = 0; i < n; i++)
+//     {
+//         for (int j = i + 1; j < n; j++)
+//         {
+//             if (a[i] > 2 * a[j])
+//                 cnt++;
+//         }
+//     }
+//     return cnt;
+// }
+
+// Time Complexity: O(N2)
+
+// ############################ OPTIMAL APPROACH ###################################
+
+// void merge(vector<int> &arr, int low, int mid, int high)
+// {
+//     vector<int> temp;
+//     int left = low;
+//     int right = mid + 1;
+
+//     while (left <= mid && right <= high)
+//     {
+//         if (arr[left] <= arr[right])
+//         {
+//             temp.push_back(arr[left]);
+//             left++;
+//         }
+//         else
+//         {
+//             temp.push_back(arr[right]);
+//             right++;
+//         }
+//     }
+
+//     while (left <= mid)
+//     {
+//         temp.push_back(arr[left]);
+//         left++;
+//     }
+
+//     while (right <= high)
+//     {
+//         temp.push_back(arr[right]);
+//         right++;
+//     }
+
+//     for (int i = low; i <= high; i++)
+//     {
+//         arr[i] = temp[i - low];
+//     }
+// }
+
+// int countPairs(vector<int> &arr, int low, int mid, int high)
+// {
+//     int right = mid + 1;
+//     int cnt = 0;
+//     for (int i = low; i <= mid; i++)
+//     {
+//         while (right <= high && arr[i] > 2 * arr[right])
+//             right++;
+//         cnt += (right - (mid + 1));
+//     }
+//     return cnt;
+// }
+
+// int mergeSort(vector<int> &arr, int low, int high)
+// {
+//     int cnt = 0;
+//     if (low >= high)
+//         return cnt;
+//     int mid = (low + high) / 2;
+//     cnt += mergeSort(arr, low, mid);
+//     cnt += mergeSort(arr, mid + 1, high);
+//     cnt += countPairs(arr, low, mid, high);
+//     merge(arr, low, mid, high);
+//     return cnt;
+// }
+
+// int team(vector<int> &skill, int n)
+// {
+//     return mergeSort(skill, 0, n - 1);
+// }
+// Time Complexity: O(2N*logN)
+
+// ########################################################################################
+// ################ PROBLEM: Maximum Product Subarray in an Array #########################
+// ########################################################################################
+
+// ############################ BRUTE FORCE ###################################
+
+// int maxProduct(vector<int> &nums)
+// {
+//     int maxProd = nums[0];
+
+//     for (int i = 0; i < nums.size(); i++)
+//     {
+//         int prod = 1;
+
+//         for (int j = i; j < nums.size(); j++)
+//         {
+//             prod *= nums[j];
+
+//             maxProd = max(maxProd, prod);
+//         }
+//     }
+
+//     return maxProd;
+// }
+// Time Complexity: O(N^2)
+
+// ############################ 1st OPTIMAL APPROACH ###################################
+
+// int maxProductSubArray(vector<int> &arr)
+// {
+//     int n = arr.size();
+
+//     int pre = 1, suff = 1;
+
+//     int ans = INT_MIN;
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         if (pre == 0)
+//             pre = 1;
+
+//         if (suff == 0)
+//             suff = 1;
+
+//         pre *= arr[i];
+
+//         suff *= arr[n - i - 1];
+
+//         ans = max(ans, max(pre, suff));
+//     }
+
+//     return ans;
+// }
+
+// Time Complexity: O(N)
+
+// ############################ 2nd OPTIMAL APPROACH ###################################
+
+// int maxProduct(vector<int> &nums)
+// {
+//     int res = nums[0];
+//     int maxProd = nums[0];
+//     int minProd = nums[0];
+
+//     for (int i = 1; i < nums.size(); i++)
+//     {
+//         int curr = nums[i];
+
+//         if (curr < 0)
+//             swap(maxProd, minProd);
+
+//         maxProd = max(curr, maxProd * curr);
+//         minProd = min(curr, minProd * curr);
+
+//         res = max(res, maxProd);
+//     }
+
+//     return res;
+// }
+
+// Time Complexity: O(N)
