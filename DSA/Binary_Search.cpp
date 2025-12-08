@@ -510,3 +510,274 @@ using namespace std;
 // }
 
 // Time Complexity: O(logN)
+
+// ##############################################################################
+// ################ PROBLEM: Minimum in Rotated Sorted Array ####################
+// ##############################################################################
+
+// ############################ BRUTE FORCE ###################################
+
+// int findMin(vector<int> &nums)
+// {
+
+//     int minVal = INT_MAX;
+
+//     for (int i = 0; i < nums.size(); i++)
+//     {
+
+//         minVal = min(minVal, nums[i]);
+//     }
+
+//     return minVal;
+// }
+
+// Time Complexity: O(N)
+
+// ############################ OPTIMAL APPROACH ###################################
+
+// int findMin(vector<int> &nums)
+// {
+
+//     int low = 0, high = nums.size() - 1;
+
+//     while (low < high)
+//     {
+
+//         int mid = low + (high - low) / 2;
+
+//         if (nums[mid] > nums[high])
+//         {
+
+//             low = mid + 1;
+//         }
+//         else
+//         {
+
+//             high = mid;
+//         }
+//     }
+
+//     return nums[low];
+// }
+
+// Time Complexity: O(logn)
+
+// #################################################################################################
+// ################ PROBLEM: Find out how many times the array has been rotated ####################
+// #################################################################################################
+
+// ############################ BRUTE FORCE ###################################
+
+// int findRotations(vector<int> &arr)
+// {
+//     int n = arr.size();
+
+//     int minVal = arr[0];
+
+//     int minIndex = 0;
+
+//     for (int i = 1; i < n; i++)
+//     {
+//         if (arr[i] < minVal)
+//         {
+//             minVal = arr[i];
+//             minIndex = i;
+//         }
+//     }
+
+//     return minIndex;
+// }
+
+// Time Complexity: O(n)
+
+// ############################ BETTER APPROACH ###################################
+
+// int findRotationCount(vector<int> &arr)
+// {
+//     int n = arr.size();
+//     for (int i = 0; i < n - 1; i++)
+//     {
+//         if (arr[i] > arr[i + 1])
+//         {
+//             return i + 1;
+//         }
+//     }
+//     return 0;
+// }
+
+// Time Complexity: O(n)
+
+// ############################ OPTIMAL APPROACH ###################################
+
+// int findRotations(vector<int> &arr)
+// {
+//     int low = 0;
+//     int high = arr.size() - 1;
+
+//     while (low < high)
+//     {
+//         int mid = low + (high - low) / 2;
+
+//         if (arr[mid] > arr[high])
+//         {
+//             low = mid + 1;
+//         }
+//         else
+//         {
+//             high = mid;
+//         }
+//     }
+
+//     return low;
+// }
+
+// Time Complexity: O(log n)
+
+// ######################################################################################
+// ################ PROBLEM: Search Single Element in a sorted array ####################
+// ######################################################################################
+
+// ############################ BRUTE FORCE 1 ###################################
+
+// int singleNonDuplicate(vector<int> &arr)
+// {
+//     int n = arr.size();
+
+//     if (n == 1)
+//         return arr[0];
+
+//     for (int i = 0; i < n; i++)
+//     {
+
+//         if (i == 0)
+//         {
+//             if (arr[i] != arr[i + 1])
+//                 return arr[i];
+//         }
+
+//         else if (i == n - 1)
+//         {
+//             if (arr[i] != arr[i - 1])
+//                 return arr[i];
+//         }
+
+//         else
+//         {
+//             if (arr[i] != arr[i - 1] && arr[i] != arr[i + 1])
+//                 return arr[i];
+//         }
+//     }
+
+//     return -1;
+// }
+
+// Time Complexity: O(N)
+
+// ############################ BRUTE FORCE 2 ###################################
+
+// int singleNonDuplicate(vector<int> &arr)
+// {
+//     int n = arr.size();
+
+//     int ans = 0;
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         ans = ans ^ arr[i];
+//     }
+
+//     return ans;
+// }
+
+// Time Complexity: O(N)
+
+// ############################ OPTIMAL APPROACH ###################################
+
+// int singleNonDuplicate(vector<int> &arr)
+// {
+//     int n = arr.size();
+
+//     if (n == 1)
+//         return arr[0];
+
+//     if (arr[0] != arr[1])
+//         return arr[0];
+
+//     if (arr[n - 1] != arr[n - 2])
+//         return arr[n - 1];
+
+//     int low = 1, high = n - 2;
+
+//     while (low <= high)
+//     {
+//         int mid = (low + high) / 2;
+
+//         if (arr[mid] != arr[mid + 1] && arr[mid] != arr[mid - 1])
+//         {
+//             return arr[mid];
+//         }
+
+//         if ((mid % 2 == 1 && arr[mid] == arr[mid - 1]) ||
+//             (mid % 2 == 0 && arr[mid] == arr[mid + 1]))
+//         {
+//             low = mid + 1;
+//         }
+//         else
+//         {
+//             high = mid - 1;
+//         }
+//     }
+
+//     return -1;
+// }
+
+// Time Complexity: O(logN)
+
+// ####################################################################
+// ################ PROBLEM: Peak element in Array ####################
+// ####################################################################
+
+// ############################ BRUTE FORCE ###################################
+
+// int findPeakElement(vector<int> &nums)
+// {
+//     int n = nums.size();
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         bool left = (i == 0) || (nums[i] >= nums[i - 1]);
+//         bool right = (i == n - 1) || (nums[i] >= nums[i + 1]);
+
+//         if (left && right)
+//             return i;
+//     }
+
+//     return -1;
+// }
+
+// Time Complexity: O(N)
+
+// ############################ OPTIMAL APPROACH ###################################
+
+// int findPeakElement(vector<int> &nums)
+// {
+//     int low = 0, high = nums.size() - 1;
+
+//     while (low < high)
+//     {
+//         int mid = (low + high) / 2;
+
+//         if (nums[mid] > nums[mid + 1])
+//         {
+//             high = mid;
+//         }
+//         else
+//         {
+//             low = mid + 1;
+//         }
+//     }
+
+//     return low;
+// }
+
+// Time Complexity: O(log N)
