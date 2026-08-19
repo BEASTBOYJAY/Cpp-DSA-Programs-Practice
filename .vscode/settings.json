@@ -62,7 +62,8 @@
         "algorithm": "cpp",
         "optional": "cpp",
         "unordered_set": "cpp",
-        "xhash": "cpp"
+        "xhash": "cpp",
+        "climits": "cpp"
     },
     "editor.formatOnSave": true
 }
